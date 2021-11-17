@@ -53,6 +53,7 @@ class Showcase extends StatefulWidget {
   final Duration animationDuration;
   final VoidCallback? onToolTipClick;
   final VoidCallback? onTargetClick;
+  final VoidCallback? onOverlayClick;
   final bool? disposeOnTap;
   final bool disableAnimation;
   final EdgeInsets overlayPadding;
@@ -77,6 +78,7 @@ class Showcase extends StatefulWidget {
       this.contentPadding =
           const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
       this.onToolTipClick,
+      this.onOverlayClick,
       this.overlayPadding = EdgeInsets.zero})
       : height = null,
         width = null,
@@ -110,6 +112,7 @@ class Showcase extends StatefulWidget {
     this.showcaseBackgroundColor = Colors.white,
     this.textColor = Colors.black,
     this.onTargetClick,
+    this.onOverlayClick,
     this.disposeOnTap,
     this.animationDuration = const Duration(milliseconds: 2000),
     this.disableAnimation = false,
@@ -255,7 +258,7 @@ class _ShowcaseState extends State<Showcase> with TickerProviderStateMixin {
         child: Stack(
           children: [
             GestureDetector(
-              onTap: _nextIfAny,
+              onTap: widget.onOverlayClick ?? _nextIfAny,
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
@@ -322,6 +325,7 @@ class _TargetWidget extends StatelessWidget {
         translation: const Offset(-0.5, -0.5),
         child: GestureDetector(
           onTap: onTap,
+          behavior: HitTestBehavior.opaque,
           child: Container(
             height: size!.height + 16,
             width: size!.width + 16,
